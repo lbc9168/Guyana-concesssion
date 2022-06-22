@@ -105,17 +105,24 @@ logit landType i.withConcession /*
 ** 06-05-2022 update
 **
 
+gen annual_rainfall_mm = annual_rainfall_m * 1000 * 12
+gen GUY_LABOR_k = GUY_LABOR * 1000
+
 **** compare control and treated group, cross-sectional datasets
 logit landType i.treatStatus /*
-				*/ annual_temp_Kelvin annual_rainfall_m /* 
-				*/ price_roundwood_real gold_price_real GUY_LABOR GUY_GDP /*
+				*/ annual_temp_Kelvin annual_rainfall_mm /* 
+				*/ price_roundwood_real gold_price_real GUY_LABOR_k GUY_GDP /*
                 */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 
 
-				
+logit landType i.treatStatus /*
+				*/ annual_temp_Kelvin annual_rainfall_mm /* 
+				*/ price_roundwood_real gold_price_real GUY_LABOR_k GUY_GDP /*
+                */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 [pweight = weights]
+			
 **** Panel dataset with only concession group
 logit landType i.withConcession /*
-				*/ annual_temp_Kelvin annual_rainfall_m /* 
-				*/ price_roundwood_real gold_price_real GUY_LABOR GUY_GDP /*
+				*/ annual_temp_Kelvin annual_rainfall_mm /* 
+				*/ price_roundwood_real gold_price_real GUY_LABOR_k GUY_GDP /*
                 */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 if treatStatus == 1
 				
 
