@@ -42,3 +42,19 @@ T_MT_points <- bind_rows(T_MT_control_wRepl, T_MT_treat_wRepl) %>% select(UID, w
 
 ## Export the points
 save(C_M_Points, C_T_Points, C_MT_Points, T_MT_points, file = "matched_points_220622.RData")
+
+
+## Combine matched points (weight) with panel data
+Panel_C_MT <- merge(bal_panel_MT_matched, C_MT_Points, by = c("UID"), all.x = TRUE)
+Panel_C_M <- merge(C_M_panel, C_M_Points, by = c("UID"), all.x = TRUE)
+Panel_C_T <- merge(bal_panel_timber_matched, C_T_Points, by = c("UID"), all.x = TRUE)
+Panel_T_MT <- merge(bal_panel_T_MT_matched, T_MT_points, by = c("UID"), all.x = TRUE)
+
+## Export data for regression
+library(foreign)
+write_dta(Panel_C_MT, "Panel_C_MT.dta")
+write_dta(C_M_panel, "Panel_C_M.dta")
+write_dta(bal_panel_timber_matched, "Panel_C_T.dta")
+write_dta(Panel_T_MT, "Panel_T_MT.dta")
+
+
