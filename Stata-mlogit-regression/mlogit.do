@@ -50,6 +50,9 @@ replace Tstage_2 = 5 if (year >= 2015)
 
 ********** Mlogit regression, with cross sectional data **********
 
+* sometimes there are multiple weights merged
+gen weights = weights_y 
+
 mlogit annual_change_val i.treatStatus annual_temp_Kelvin annual_rainfall_y /* 
 					*/ price_roundwood_real gold_price_real	GUY_LABOR_k GUY_GDP /*
                   */   dist_harbor  dist_road  dist_river  dist_settlement [pweight = weights]
@@ -76,7 +79,7 @@ gen land_type = 0
 replace land_type = 1 if (annual_change_val > 1)
 
 logit land_type i.treatStatus annual_temp_Kelvin annual_rainfall_y /* 
-					*/price_roundwood_real gold_price_real GUY_LABOR_k GUY_GDP /*
+					*/price_roundwood_real gold_price_real /*
                   */dist_harbor dist_road dist_river dist_settlement i.Tstage_2 [pweight = weights] if (annual_change_val < 4)
 
 
