@@ -19,7 +19,7 @@ gen dist_road = NEAR_DIST_road/1000
 gen dist_river = NEAR_DIST_river/1000
 gen dist_settlement = NEAR_DIST_settlement/1000
 
-
+gen annual_rainfall_y = annual_rainfall_m * 12
 
 **** Generate Time stage fixed effect
 
@@ -50,16 +50,19 @@ replace Tstage_2 = 5 if (year >= 2015)
 
 ********** Mlogit regression, with cross sectional data **********
 
-mlogit annual_change_val i.treatStatus annual_temp_Kelvin annual_rainfall_m  /* 
+mlogit annual_change_val i.treatStatus annual_temp_Kelvin annual_rainfall_y /* 
 					*/ price_roundwood_real gold_price_real	GUY_LABOR_k GUY_GDP /*
                   */   dist_harbor  dist_road  dist_river  dist_settlement [pweight = weights]
 
-mlogit annual_change_val i.treatStatus annual_temp_Kelvin annual_rainfall_m  /* 
-					*/ price_roundwood_real gold_price_real	GUY_LABOR_k GUY_GDP /*
-                  */   dist_harbor  dist_road  dist_river  dist_settlement i.Tstage_2 [pweight = weights]
+mlogit annual_change_val i.treatStatus annual_temp_Kelvin annual_rainfall_y /* 
+					*/price_roundwood_real gold_price_real GUY_LABOR_k GUY_GDP /*
+                  */dist_harbor dist_road dist_river dist_settlement i.Tstage_2 [pweight = weights] if (annual_change_val < 4)
 
+mlogit annual_change_val i.treatStatus annual_temp_Kelvin annual_rainfall_y /* 
+					*/price_roundwood_real gold_price_real	GUY_LABOR_k GUY_GDP /*
+                  */dist_harbor dist_road dist_river dist_settlement i.Tstage_2
 				  
-				  
+		  
 mlogit, rrr
 
 test treatStatus
@@ -68,6 +71,13 @@ margins treatStatus, atmeans predict(outcome(3))
 	  
 marginsplot 
 	
+***** Try logit regression (06-25-2022)
+gen land_type = 0
+replace land_type = 1 if (annual_change_val > 1)
+
+logit land_type i.treatStatus annual_temp_Kelvin annual_rainfall_y /* 
+					*/price_roundwood_real gold_price_real GUY_LABOR_k GUY_GDP /*
+                  */dist_harbor dist_road dist_river dist_settlement i.Tstage_2 [pweight = weights] if (annual_change_val < 4)
 
 
 	

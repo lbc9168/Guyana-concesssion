@@ -111,7 +111,7 @@ gen GUY_LABOR_k = GUY_LABOR * 1000
 **** compare control and treated group, cross-sectional datasets
 logit landType i.treatStatus /*
 				*/ annual_temp_Kelvin annual_rainfall_mm /* 
-				*/ price_roundwood_real gold_price_real GUY_LABOR_k GUY_GDP /*
+				*/ gold_price_real GUY_LABOR_k GUY_GDP /*
                 */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 
 
 logit landType i.treatStatus /*
