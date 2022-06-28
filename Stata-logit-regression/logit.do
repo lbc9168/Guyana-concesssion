@@ -107,6 +107,7 @@ logit landType i.withConcession /*
 
 gen annual_rainfall_mm = annual_rainfall_m * 1000 * 12
 gen GUY_LABOR_k = GUY_LABOR * 1000
+gen gold_price_GYD_k = gold_price_real * exchange_rate / 1000
 
 **** compare control and treated group, cross-sectional datasets
 logit landType i.treatStatus /*
@@ -116,12 +117,23 @@ logit landType i.treatStatus /*
 
 logit landType i.treatStatus /*
 				*/ annual_temp_Kelvin annual_rainfall_mm /* 
-				*/ price_roundwood_real gold_price_real GUY_LABOR_k GUY_GDP /*
-                */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 [pweight = weights]
+				*/ price_roundwood_real gold_price_GYD_k GUY_LABOR_k /*
+                */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 [pweight = weights] 
+				
+				
+logit landType i.treatStatus /*
+				*/ annual_temp_Kelvin annual_rainfall_mm /* 
+				*/ price_roundwood_real gold_price_GYD_k GUY_LABOR_k /*
+                */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 /*
+				*/ Tstage_2#c.gold_price_GYD_k [pweight = weights]
 			
 **** Panel dataset with only concession group
 logit landType i.withConcession /*
 				*/ annual_temp_Kelvin annual_rainfall_mm /* 
+				*/ price_roundwood_real gold_price_real GUY_LABOR_k GUY_GDP /*
+                */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 if treatStatus == 1
+				
+logit landType  annual_temp_Kelvin annual_rainfall_mm /* 
 				*/ price_roundwood_real gold_price_real GUY_LABOR_k GUY_GDP /*
                 */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 if treatStatus == 1
 				
