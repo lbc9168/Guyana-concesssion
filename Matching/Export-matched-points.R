@@ -57,4 +57,25 @@ write_dta(C_M_panel, "Panel_C_M.dta")
 write_dta(bal_panel_timber_matched, "Panel_C_T.dta")
 write_dta(Panel_T_MT, "Panel_T_MT.dta")
 
+#### export matched points data for mapping
+load("~/GitHub/Guyana-concesssion/mlogit_data_combine/mlogit_data_combine.RData")
+
+## Pick lit
+C_M_positions <- subset(C_M_panel, select = c(UID,slat,slong,treatStatus))
+C_T_positions <- subset(C_T_panel, select = c(UID,slat,slong,treatStatus))
+C_MT_positions <- subset(C_MT_panel, select = c(UID,slat,slong,treatStatus))
+T_MT_positions <- subset(T_MT_panel, select = c(UID,slat,slong,treatStatus))
+
+C_M_positions <- merge(C_M_Points, C_M_positions, by = c("UID"))
+C_M_positions <- C_M_positions[!duplicated(C_M_positions$UID),]
+
+C_T_positions <- merge(C_T_Points, C_T_positions, by = c("UID"))
+C_T_positions <- C_T_positions[!duplicated(C_T_positions$UID),]
+
+C_MT_positions <- merge(C_MT_Points, C_MT_positions, by = c("UID"))
+C_MT_positions <- C_MT_positions[!duplicated(C_MT_positions$UID),]
+
+T_MT_positions <- merge(T_MT_points, T_MT_positions, by = c("UID"))
+T_MT_positions <- T_MT_positions[!duplicated(T_MT_positions$UID),]
+
 

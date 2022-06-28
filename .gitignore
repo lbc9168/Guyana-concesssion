@@ -5,3 +5,7 @@ Matching/.Rhistory
 mlogit_data_combine/.Rhistory
 mlogit_data_combine/.RDataTmp
 *.zip
+Matching/C_MT_positions.csv
+Matching/C_M_positions.csv
+Matching/C_T_positions.csv
+Matching/T_MT_positions.csv
