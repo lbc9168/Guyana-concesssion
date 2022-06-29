@@ -111,6 +111,8 @@ gen annual_rainfall_mm = monthly_rainfall_m * 1000 * 12
 gen GUY_LABOR_k = GUY_LABOR * 1000
 gen gold_price_GYD_k = gold_price_real * exchange_rate / 1000
 
+gen weights = weights_y
+
 **** compare control and treated group, cross-sectional datasets
 logit landType i.treatStatus /*
 				*/ annual_temp_Kelvin annual_rainfall_mm /* 
@@ -120,7 +122,7 @@ logit landType i.treatStatus /*
 logit landType i.treatStatus /*
 				*/ annual_temp_Kelvin annual_rainfall_m /* 
 				*/ price_roundwood_real gold_price_GYD_k GUY_LABOR_k /*
-                */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 [pweight = weights] 
+                */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 [pweight = weights]
 				
 				
 logit landType i.treatStatus /*
