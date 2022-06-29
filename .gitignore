@@ -11,3 +11,5 @@ Matching/C_T_positions.csv
 Matching/T_MT_positions.csv
 Matching/C_T_positions.xlsx
 Matching/schema.ini
+*.csv
+*.xlsx

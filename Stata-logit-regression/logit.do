@@ -56,7 +56,7 @@ logit landType dist_harbor
 
 
 **** For T vs MT: Create treatStatus variable based on UID
-gen treatStatus = 0
+replace treatStatus = 0
 replace treatStatus = 1 if strmatch(UID,"mtoverlap*") == 1
 
 display(strmatch("mtoverlap1","mtoverlap*"))
@@ -104,8 +104,10 @@ logit landType i.withConcession /*
 ************************************************
 ** 06-05-2022 update
 **
+gen monthly_rainfall_m = annual_rainfall_m
+replace annual_rainfall_m = monthly_rainfall_m * 12
+gen annual_rainfall_mm = monthly_rainfall_m * 1000 * 12
 
-gen annual_rainfall_mm = annual_rainfall_m * 1000 * 12
 gen GUY_LABOR_k = GUY_LABOR * 1000
 gen gold_price_GYD_k = gold_price_real * exchange_rate / 1000
 
@@ -116,7 +118,7 @@ logit landType i.treatStatus /*
                 */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 
 
 logit landType i.treatStatus /*
-				*/ annual_temp_Kelvin annual_rainfall_mm /* 
+				*/ annual_temp_Kelvin annual_rainfall_m /* 
 				*/ price_roundwood_real gold_price_GYD_k GUY_LABOR_k /*
                 */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 [pweight = weights] 
 				
