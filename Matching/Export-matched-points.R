@@ -60,7 +60,7 @@ write_dta(Panel_T_MT, "Panel_T_MT.dta")
 #### export matched points data for mapping
 load("~/GitHub/Guyana-concesssion/mlogit_data_combine/mlogit_data_combine.RData")
 
-## Pick lit
+## Pick slat, slong, treatstatus of the matched points
 C_M_positions <- subset(C_M_panel, select = c(UID,slat,slong,treatStatus))
 C_T_positions <- subset(C_T_panel, select = c(UID,slat,slong,treatStatus))
 C_MT_positions <- subset(C_MT_panel, select = c(UID,slat,slong,treatStatus))
@@ -78,4 +78,9 @@ C_MT_positions <- C_MT_positions[!duplicated(C_MT_positions$UID),]
 T_MT_positions <- merge(T_MT_points, T_MT_positions, by = c("UID"))
 T_MT_positions <- T_MT_positions[!duplicated(T_MT_positions$UID),]
 
+## export as csv file
+write.csv(C_M_positions, "C_M_positions.csv")
+write.csv(C_T_positions, "C_T_positions.csv")
+write.csv(C_MT_positions, "C_MT_positions.csv")
+write.csv(T_MT_positions, "T_MT_positions.csv")
 
