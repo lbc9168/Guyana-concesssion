@@ -134,8 +134,14 @@ logit landType i.treatStatus /*
 **** Panel dataset with only concession group
 logit landType i.withConcession /*
 				*/ annual_temp_Kelvin annual_rainfall_mm /* 
-				*/ price_roundwood_real gold_price_GYD_k GUY_LABOR_k GUY_GDP /*
+				*/ price_roundwood_real gold_price_GYD_k GUY_LABOR_k/*
                 */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 if treatStatus == 1
+
+** For timber plus overlap
+logit landType i.withConcession /*
+				*/ annual_temp_Kelvin annual_rainfall_mm /* 
+				*/ price_roundwood_real gold_price_GYD_k GUY_LABOR_k/*
+                */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 
 				
 logit landType  annual_temp_Kelvin annual_rainfall_mm /* 
 				*/ price_roundwood_real gold_price_real GUY_LABOR_k GUY_GDP /*
