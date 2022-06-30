@@ -50,13 +50,19 @@ Panel_C_M <- merge(C_M_panel, C_M_Points, by = c("UID"), all.x = TRUE)
 Panel_C_T <- merge(bal_panel_timber_matched, C_T_Points, by = c("UID"), all.x = TRUE)
 Panel_T_MT <- merge(Panel_T_MT, T_MT_points, by = c("UID"), all.x = TRUE)
 
+library(dplyr)
+library(tidyverse)
+Panel_T_MT <- Panel_T_MT %>% drop_na(weights.y)
+
 ## Export data for regression
 library(foreign)
 
 write.dta(Panel_C_MT, "Panel_C_MT.dta")
 write.dta(C_M_panel, "Panel_C_M.dta")
 write.dta(bal_panel_timber_matched, "Panel_C_T.dta")
-write.dta(T_MT_panel, "Panel_T_MT.dta")
+write.dta(Panel_T_MT, "Panel_T_MT.dta")
+
+
 
 #### export matched points data for mapping
 load("~/GitHub/Guyana-concesssion/mlogit_data_combine/mlogit_data_combine.RData")
