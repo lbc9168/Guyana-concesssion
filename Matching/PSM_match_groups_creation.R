@@ -204,8 +204,8 @@ plot(summary(match_mahvars_ps_wRepl_2), position = "topright")
 
 
 ###### 06-05-2022 update: 6. Timber vs Overlap
-rx0 <- PSM_match_TimberOnly %>% mutate(treatStatus=1)  # fire untreated
-rx1 <- PSM_match_MToverlap %>% mutate(treatStatus=0) # fire treated
+rx0 <- PSM_match_TimberOnly %>% mutate(treatStatus=0)  # fire untreated
+rx1 <- PSM_match_MToverlap %>% mutate(treatStatus=1) # fire treated
 
 colnames(rx0);colnames(rx1)
 
