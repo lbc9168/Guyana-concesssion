@@ -56,7 +56,7 @@ gen annual_rainfall_mm = monthly_rainfall_m * 1000 * 12
 
 gen GUY_LABOR_k = GUY_LABOR * 1000
 gen gold_price_GYD_k = gold_price_real * exchange_rate / 1000
-gen roundwood_price_GYD_k = price_roundwood_real * exchange_rate / 1000
+gen timber_price_GYD_k = price_roundwood_real * exchange_rate / 1000
 
 * sometimes there are multiple weights merged
 gen weights = weights_y 
@@ -66,7 +66,7 @@ mlogit annual_change_val i.treatStatus annual_temp_Kelvin annual_rainfall_m /*
                   */   dist_harbor  dist_road  dist_river  dist_settlement [pweight = weights]
 
 mlogit annual_change_val i.treatStatus annual_temp_Kelvin annual_rainfall_m /* 
-					*/roundwood_price_GYD_k gold_price_GYD_k GUY_LABOR_k  /*
+					*/timber_price_GYD_k gold_price_GYD_k GUY_LABOR_k  /*
                   */dist_harbor dist_road dist_river dist_settlement i.Tstage_2 [pweight = weights] if (annual_change_val < 4)
 
 mlogit annual_change_val i.treatStatus annual_temp_Kelvin annual_rainfall_m /* 
