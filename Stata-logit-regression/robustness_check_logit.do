@@ -30,10 +30,10 @@ logit landType i.treatStatus /*
 				
 				
 ** 2. Time stage interact with concession
-logit landType i.treatStatus Tstage_2#i.treatStatus /*
+logit landType i.treatStatus i.Tstage_2 Tstage_2#i.treatStatus /*
 				*/ annual_temp_Kelvin annual_rainfall_m /* 
 				*/ timber_price_GYD_k gold_price_GYD_k GUY_LABOR_k /*
-                */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 [pweight = weights] 
+                */ dist_harbor dist_road dist_river dist_settlement [pweight = weights] 
 
 
 ** 3. Time stage interact with price
