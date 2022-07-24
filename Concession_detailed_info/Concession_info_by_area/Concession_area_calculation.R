@@ -19,4 +19,4 @@ colnames(Concession_info_MTOverlap)
 area_sum_MTOverlap <- ddply(Concession_info_MTOverlap, .(TYPE), summarize, sum_geo_area = sum(geo_area))
 area_sum_TimberOnly <- ddply(Concession_info_TimberOnly, .(TYPE), summarize, sum_geo_area = sum(geo_area))
 
-
+area_sum_Guyana <- ddply(Concession_info_Guyana, .(TYPE), summarize, sum_geo_area = sum(HECTARES))
