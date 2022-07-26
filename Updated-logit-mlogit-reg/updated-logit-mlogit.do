@@ -15,7 +15,7 @@ replace FID = 999 if strmatch(UID,"control*") == 1
 replace TYPE = "control" if strmatch(UID,"control*") == 1
 
 gen timber_concession_type = 1
-replace timber_concession_type = 2 if TYPE == "TSA"
+replace timber_concession_type = 2 if TYPE == "TSA" | TYPE == "WCL"
 replace timber_concession_type = 0 if TYPE == "control"
 
 ** Generate concession treatment effect (for single group panel)
@@ -29,41 +29,71 @@ replace forest_type_binary = 1 if (annual_change_val == 3)
 
 ****** Create a clean dataset and save as a new data file ******
 tab TYPE annual_change_val
+tab timber_concession_type annual_change_val
 
-
-
-
+** for C vs MT
+drop if TYPE == "NA" | TYPE == "IWO" | TYPE == "NIL" | TYPE == "Mining Lease" 
+drop if annual_change_val == 4
+** for C vs T
+drop if TYPE == "NA" | TYPE == "IWO" | TYPE == "NIL" | TYPE == "Agri Lease" 
+drop if annual_change_val == 4
+** for T vs MT
+drop if TYPE == "NA" | TYPE == "IWO" | TYPE == "NIL" | TYPE == "Agri Lease" | TYPE == "Mining Lease"
+drop if annual_change_val == 4
+** for C vs M
+drop if annual_change_val == 4
 
 ***************************************************
-*********** 1. mlogit with DID settings ***********
+*********** 1. mlogit models ***********
 
+**** 1a. mlogit with DID setting
 mlogit annual_change_val i.treatStatus i.withConcession /*
 				  */ annual_temp_Kelvin annual_rainfall_m /* 
 				  */ timber_price_GYD_k gold_price_GYD_k GUY_LABOR_k  /*
                   */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 /*
-				  */ [pweight = weights] if (annual_change_val < 4 & TYPE != "NA")
+				  */ [pweight = weights] 
 				  
-				  
+**** 1b. mlogit with fixed effect setting
+mlogit annual_change_val i.treatStatus /*
+				  */ annual_temp_Kelvin annual_rainfall_m /* 
+				  */ timber_price_GYD_k gold_price_GYD_k GUY_LABOR_k  /*
+                  */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 /*
+				  */ [pweight = weights] 
+				  				  
 
-****** Subgroup impact *******
+****** 1c. Subgroup impact, using fixed effect settings *******
 
-tab annual_change_val withConcession if timber_concession_type != 2
+tab annual_change_val Tstage_2 
 tab TYPE annual_change_val
 
 
+** TSA Group
+mlogit annual_change_val i.treatStatus annual_temp_Kelvin annual_rainfall_m /* 
+					*/timber_price_GYD_k gold_price_GYD_k GUY_LABOR_k  /*
+                  */dist_harbor dist_road dist_river dist_settlement i.Tstage_2 [pweight = weights] /*
+				 */ if timber_concession_type != 1
+
+** SFP Group 
+** ERROR MESSAGE: highly singular in MT setting (07-26 update: because Tstage is correlated with result)
+mlogit annual_change_val i.treatStatus annual_temp_Kelvin annual_rainfall_m /* 
+					*/timber_price_GYD_k gold_price_GYD_k GUY_LABOR_k  /*
+                  */dist_harbor dist_road dist_river dist_settlement i.Tstage_2 [pweight = weights] /*
+				 */ if timber_concession_type != 2
+				 
+				 
+****** 1d. Subgroup impact, using DID settings *******
 
 ** TSA Group
 mlogit annual_change_val i.treatStatus i.withConcession annual_temp_Kelvin annual_rainfall_m /* 
 					*/timber_price_GYD_k gold_price_GYD_k GUY_LABOR_k  /*
                   */dist_harbor dist_road dist_river dist_settlement i.Tstage_2 [pweight = weights] /*
-				 */ if (annual_change_val < 4) & timber_concession_type != 1
+				 */ if timber_concession_type != 1
 
 ** SFP Group 
-** ERROR MESSAGE: highly singular in MT setting
 mlogit annual_change_val i.treatStatus i.withConcession annual_temp_Kelvin annual_rainfall_m /* 
 					*/timber_price_GYD_k gold_price_GYD_k GUY_LABOR_k  /*
                   */dist_harbor dist_road dist_river dist_settlement i.Tstage_2 [pweight = weights] /*
-				 */ if (annual_change_val < 4) & timber_concession_type != 2
+				 */ if timber_concession_type != 2
 
 
 ********************************************************************
@@ -73,23 +103,21 @@ tab annual_change_val withConcession, chi2
 tab annual_change_val treatStatus, chi2
 
 
-
-** fixed effect setting
+** 2a. fixed effect setting
 logit forest_type_binary i.treatStatus /*
 				*/ annual_temp_Kelvin annual_rainfall_m /* 
 				*/ timber_price_GYD_k gold_price_GYD_k GUY_LABOR_k /*
                 */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 /*
-				*/ [pweight = weights] if (annual_change_val != 4 & TYPE != "NA")
+				*/ [pweight = weights] 
 
-** DID setting: 
+** 2b. DID setting: 
 ** treatStatus: On land with concession
 ** withConcession: On land with concession & time after issue date
 logit forest_type_binary i.treatStatus i.withConcession /*
 				*/ annual_temp_Kelvin annual_rainfall_m /* 
 				*/ timber_price_GYD_k gold_price_GYD_k GUY_LABOR_k /*
                 */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 /*
-				*/ [pweight = weights] if (annual_change_val != 4 & TYPE != "NA")
-
+				*/ [pweight = weights] 
 
 
 
