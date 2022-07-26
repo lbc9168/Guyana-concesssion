@@ -13,11 +13,11 @@ library(foreign)
 colnames(Concession_info_TimberOnly)
 
 info_TimberOnly <- Concession_info_TimberOnly %>%
-  select(UID, OWNER, TYPE, ACRES)
+  select(UID, FID, OWNER, TYPE, ACRES)
 
 
 info_MTOverlap <- Concession_info_MTOverlap %>%
-  select(UID, OWNER, TYPE, ACRES)
+  select(UID, FID, OWNER, TYPE, ACRES)
 
 
 
@@ -53,10 +53,10 @@ rm(Panel_C_T_mlogit, Panel_C_MT_mlogit, C_MT_panel_mlogit, C_T_panel_mlogit)
 colnames(Concession_info_TimberOnly)
 
 info_TimberOnly <- Concession_info_TimberOnly %>%
-  select(UID, OWNER, TYPE, ACRES, YEAR_ISSUE)
+  select(UID, FID, OWNER, TYPE, ACRES, YEAR_ISSUE)
 
 info_MTOverlap <- Concession_info_MTOverlap %>%
-  select(UID, OWNER, TYPE, ACRES, YEAR_ISSUE)
+  select(UID, FID, OWNER, TYPE, ACRES, YEAR_ISSUE)
 
 info_TandMT <- rbind(info_MTOverlap, info_TimberOnly)
 
