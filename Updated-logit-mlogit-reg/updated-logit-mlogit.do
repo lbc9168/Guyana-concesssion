@@ -65,7 +65,7 @@ mlogit annual_change_val i.treatStatus /*
 
 tab annual_change_val Tstage_2 
 tab TYPE annual_change_val
-
+tab YEAR_ISSUE TYPE
 
 ** TSA Group
 mlogit annual_change_val i.treatStatus annual_temp_Kelvin annual_rainfall_m /* 
