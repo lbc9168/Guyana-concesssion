@@ -45,22 +45,22 @@ drop if annual_change_val == 4
 
 ***************************************************
 *********** 1. mlogit models ***********
-
-**** 1a. mlogit with DID setting
-mlogit annual_change_val i.treatStatus i.withConcession /*
-				  */ annual_temp_Kelvin annual_rainfall_m /* 
-				  */ timber_price_GYD_k gold_price_GYD_k GUY_LABOR_k  /*
-                  */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 /*
-				  */ [pweight = weights] 
 				  
-**** 1b. mlogit with fixed effect setting
+**** 1a. mlogit with fixed effect setting
 mlogit annual_change_val i.treatStatus /*
 				  */ annual_temp_Kelvin annual_rainfall_m /* 
 				  */ timber_price_GYD_k gold_price_GYD_k GUY_LABOR_k  /*
                   */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 /*
 				  */ [pweight = weights] 
 				  				  
-
+**** 1b. mlogit with DID setting
+mlogit annual_change_val i.treatStatus i.withConcession /*
+				  */ annual_temp_Kelvin annual_rainfall_m /* 
+				  */ timber_price_GYD_k gold_price_GYD_k GUY_LABOR_k  /*
+                  */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 /*
+				  */ [pweight = weights] 
+								  
+								  
 ****** 1c. Subgroup impact, using fixed effect settings *******
 
 tab annual_change_val Tstage_2 
@@ -118,6 +118,7 @@ logit forest_type_binary i.treatStatus i.withConcession /*
 				*/ timber_price_GYD_k gold_price_GYD_k GUY_LABOR_k /*
                 */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 /*
 				*/ [pweight = weights] 
+
 
 
 
