@@ -43,6 +43,9 @@ drop if annual_change_val == 4
 ** for C vs M
 drop if annual_change_val == 4
 
+
+
+
 ***************************************************
 *********** 1. mlogit models ***********
 				  
@@ -120,5 +123,27 @@ logit forest_type_binary i.treatStatus i.withConcession /*
 				*/ [pweight = weights] 
 
 
+				
+****************************************************************				
+********* 2011-08-23 update *********
+**** using 2-year lag gold price to test its impact to deforestation
+
+** Generate 2-year lag gold price
+sort UID year
+
+by UID: gen gold_price_GYD_k_2ylag = gold_price_GYD_k[_n-2] if year == year[_n-2] + 2
 
 
+** fixed effect model with mining (2 year lag gold price)
+mlogit annual_change_val i.treatStatus /*
+				  */ annual_temp_Kelvin annual_rainfall_m /* 
+				  */ timber_price_GYD_k gold_price_GYD_k_2ylag GUY_LABOR_k  /*
+                  */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 /*
+				  */ [pweight = weights] 
+
+** DID model with mining
+mlogit annual_change_val i.treatStatus i.withConcession /*
+				  */ annual_temp_Kelvin annual_rainfall_m /* 
+				  */ timber_price_GYD_k gold_price_GYD_k_2ylag GUY_LABOR_k  /*
+                  */ dist_harbor dist_road dist_river dist_settlement i.Tstage_2 /*
+				  */ [pweight = weights] 
